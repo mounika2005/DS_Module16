@@ -1,66 +1,95 @@
-# Ex16 AVL Tree - Insertion
-## DATE:
+# Ex16 Check for Balanced Parentheses Using Stack
+
 ## AIM:
-To write a C function to insert the elements in an AVL Tree.
+To write a Java program that verifies whether the parentheses (brackets) in an input string are balanced — meaning each opening bracket (, {, [ has a corresponding and correctly ordered closing bracket ), }, ].
 
 ## Algorithm
-1. Start the program. 
-2. If the node is NULL, create a new node with value x.
-3. Insert x recursively into the left or right subtree based on comparison.
-4. Calculate the balance factor (BF) after insertion.
-5. If BF is -2 or 2, perform appropriate rotations (RR, RL, LL, or LR).
-6. Update the height of the current node.
-7. Return the new root after insertion and balancing..
-8. End the program.
+1.Create a stack and scan the string character by character.
+
+
+2.Push every opening bracket (, {, [ onto the stack.
+
+
+3.For every closing bracket, check if the stack is empty — if yes, it's unbalanced.
+
+
+4.Pop the top element and verify if it matches the type of closing bracket.
+
+
+5.After scanning, if the stack is empty, it is balanced; otherwise, unbalanced.
+
+ 
 
 ## Program:
 ```
 /*
-Program to insert the elements in an AVL Tree
+Program to verify whether the parentheses (brackets) in an input string are balanced
+Developed by: LEVAKU LAKSHMI MOUNIKA
+RegisterNumber: 212223100026
+import java.util.Scanner;
+
+public class ParenChecker {
+    static class ArrayStack {
+        private char[] data;
+        private int top;
+
+        public ArrayStack(int capacity) {
+            data = new char[capacity];
+            top = -1;
+        }
+
+        public boolean isEmpty() { return top == -1; }
+        public boolean isFull() { return top == data.length - 1; }
+
+        public void push(char c) {
+            if (isFull()) throw new RuntimeException("Stack overflow");
+            data[++top] = c;
+        }
+        public char pop() {
+            if (isEmpty()) throw new RuntimeException("Stack underflow");
+            return data[top--];
+        }
+        public char peek() {
+            if (isEmpty()) throw new RuntimeException("Stack is empty");
+            return data[top];
+        }
+    }
+
+
+    public static boolean isBalanced(String expr) {
+        ArrayStack st = new ArrayStack(expr.length());
+        for (char ch : expr.toCharArray()) {
+            if (ch == '(' || ch == '{' || ch == '[') {
+                st.push(ch);
+            } else if (ch == ')' || ch == '}' || ch == ']') {
+                if (st.isEmpty()) return false;
+                char top = st.pop();
+                if ((ch == ')' && top != '(') ||
+                    (ch == '}' && top != '{') ||
+                    (ch == ']' && top != '[')) {
+                    return false;
+                }
+            }
+        }
+        return st.isEmpty();
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String expr = sc.nextLine();
+        boolean ok = isBalanced(expr);
+        System.out.println(ok);
+        sc.close();
+    }
+}
 
 */
-node * insert(node *T,int x) 
-{ 
-if(T==NULL) 
-{ 
-T=(node*)malloc(sizeof(node)); 
-T->data=x; 
-T->left=NULL; 
-T->right=NULL; 
-} 
-else 
-if(x > T->data) 
-{ 
-T->right=insert(T->right,x); 
-if(BF(T)==-2) 
-{ 
-if(x>T->right->data) 
-T=RR(T); 
-else 
-T=RL(T); 
-} 
-} 
-else 
-if(x < T->data) 
-{   
-T->left=insert(T->left,x); 
-if(BF(T)==2) 
-{ 
-if(x < T->left->data) 
-T=LL(T); 
-else 
-T=LR(T); 
-} 
-} 
-T->ht=height(T); 
-return(T); 
-}
 ```
 
 ## Output:
+<img width="872" height="213" alt="image" src="https://github.com/user-attachments/assets/ce3e9018-79ba-4e34-95fb-374e081b201e" />
 
-![image](https://github.com/user-attachments/assets/a713a8d5-660b-487e-9ac6-81388cd7775a)
 
 
 ## Result:
-Thus, the function to insert the elements in an AVL Tree is implemented successfully in C programming language.
+Thus,the program correctly checks whether an input string has balanced parentheses using a stack.
